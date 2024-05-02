@@ -80,6 +80,7 @@ class SchedulerDecider(Decider):
                 response = json.loads(response)
             except Exception as e:
                 result.failed(f"failed to load response json: {response}")
+                return result
             status = response["status"]
             if is_denied(status):
                 result.denied(response["message"])
@@ -95,13 +96,14 @@ class SchedulerDecider(Decider):
     
     def decide(self, context: ScheduleContext) -> Result:
         task = context.current_task()
-        conversation = context.current_conversation()
         target = task.get_target()
         if context.is_phase_scheduling():
             prompt = TASK_SCHEDULE_PROMPT.format(target)
-            conversation.add_message(prompt)
+            context.add_message(prompt)
+        context.prepare_conversation()
+        conversation = context.current_conversation()
         response = self.ai.ask(conversation)
-        logger.info(f"ai replies with: \n### \n{response} \n###")
+        logger.info(f"ai replies with: {response}")
         return self.to_result(response)
         
 

@@ -1,8 +1,11 @@
-import logging
+import os, logging
+
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 logging.basicConfig(
-       level=logging.INFO,  # 设置日志级别
-       format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # 日志格式
-       datefmt='%Y-%m-%d %H:%M:%S'  # 时间格式
+       format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+       datefmt='%Y-%m-%d %H:%M:%S'
    )
-logger = logging.getLogger('my_logger')
+
+logger = logging.getLogger('multi-agent')
+logger.setLevel(LOG_LEVEL)

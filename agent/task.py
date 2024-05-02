@@ -15,25 +15,32 @@ class Task:
 
     def get_target(self) -> str:
         return self.target
+    
+    def copy(self) -> "Task":
+        return Task(self.target)
 
 class Result:
     status: str
     message: str
-    def granted(self, message: str):
+    def granted(self, message: str) -> "Result":
         self.status = GRANTED
         self.message = message
+        return self
     
-    def denied(self, message: str):
+    def denied(self, message: str) -> "Result":
         self.status = DENIED
         self.message = message
+        return self
 
-    def insufficient(self, message: str):
+    def insufficient(self, message: str) -> "Result":
         self.status = INSUFFICIENT
         self.message = message
+        return self
 
-    def failed(self, message: str):
+    def failed(self, message: str) -> "Result":
         self.status = FAILED
         self.message = message
+        return self
 
     def is_granted(self):
         return self.status == GRANTED
